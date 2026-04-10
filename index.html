@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Student Portal</title>
+
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #1a080c;
+            /* Deep dark burgundy background */
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --primary: #c93b59;
+            /* Bright burgundy/crimson accent */
+            --text-main: #fdf8f9;
+            --text-muted: #d4aab5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Animated Background */
+        .ambient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #9b224240;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #7c1a3b40;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 60%;
+            width: 40vw;
+            height: 40vw;
+            background: #c93b5925;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(5%, 5%) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-5%, -5%) scale(0.9);
+            }
+        }
+
+        /* Main Container */
+        .portal-container {
+            width: 90%;
+            max-width: 1000px;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeDown 1s ease forwards;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #eabdc7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        /* Glassmorphism Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 59, 89, 0.25);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1);
+        }
+
+        /* Specific Colors for specific cards based on Burgundy */
+        .card:nth-child(1) .icon-box {
+            color: #facc15;
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .card:nth-child(2) .icon-box {
+            color: #f87171;
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .card:nth-child(3) .icon-box {
+            color: #93c5fd;
+            box-shadow: 0 0 20px rgba(147, 197, 253, 0.2);
+        }
+
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .card-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 0.95rem;
+            transition: gap 0.3s ease;
+        }
+
+        .card:hover .card-arrow {
+            gap: 12px;
+        }
+
+        /* Animations */
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Dynamic Background -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="portal-container">
+        <header>
+            <img src="https://nyctcm.edu/wp-content/uploads/2023/09/nyctcm-logo.png" alt="NYCTCM Logo"
+                style="width: 250px; display: block; margin: 0 auto 2rem auto; background: #ffffff; padding: 15px 30px; border-radius: 50px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
+            <span class="subtitle">Unified Access Portal</span>
+            <h1 style="font-size: 2.5rem; line-height: 1.2; margin-bottom: 1rem;">New York College of<br>Traditional
+                Chinese Medicine</h1>
+            <p class="desc">Select a portal below to securely access your institutional services, coursework, and campus
+                communications.</p>
+        </header>
+
+        <div class="menu-grid">
+            <!-- Card 1: 学校网账 -->
+            <a href="https://nyctcm.edu/" target="_blank" class="card" id="btn-account">
+                <div class="icon-box">
+                    <img src="https://nyctcm.edu/wp-content/uploads/2026/04/cropped-NYCTCM-Logo-Square2025-180x180.png" alt="NYCTCM Icon" style="width: 42px; height: 42px; object-fit: contain; border-radius: 6px;">
+                </div>
+                <h3>NYCTCM Website</h3>
+                <p>Check school updated information and stay updated with campus announcements.</p>
+                <div class="card-arrow">
+                    Access System <span>→</span>
+                </div>
+            </a>
+
+            <!-- Card 2: Populi 登录 -->
+            <a href="https://nyctcm.populiweb.com/" target="_blank" class="card" id="btn-populi">
+                <div class="icon-box">
+                    <img src="https://nyctcm.populiweb.com/apple-touch-icon.png" alt="Populi Icon" style="width: 42px; height: 42px; object-fit: contain; border-radius: 6px;">
+                </div>
+                <h3>Populi Login</h3>
+                <p>The official portal for viewing course schedules, course registration, submitting assignments, and
+                    checking grades.</p>
+                <div class="card-arrow">
+                    Access System <span>→</span>
+                </div>
+            </a>
+
+            <!-- Card 3: 学生邮箱登录 -->
+            <a href="https://mail.google.com/mail/u/0/?pli=1" target="_blank" class="card" id="btn-email">
+                <div class="icon-box">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail Icon" style="width: 36px; height: 36px; object-fit: contain;">
+                </div>
+                <h3>Student Email Login</h3>
+                <p>Receive and manage important notifications from professors and administrative offices securely.</p>
+                <div class="card-arrow">
+                    Access Email <span>→</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Optional JS for smooth hover effects or click handlers if urls are not yet available -->
+    <script>
+        // Placeholder handlers if URLs are not populated in the href attributes
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    // Optional visual feedback
+                    const title = this.querySelector('h3').innerText;
+                    console.log(`Navigating to ${title}...`);
+                    // If you have actual URLs, replace the href attributes directly in HTML
+                    // OR window.location.href = "YOUR_REAL_URL_HERE";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
