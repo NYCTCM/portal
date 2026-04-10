@@ -39,8 +39,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden; /* 仅防止左右滑动引起横向滚动条 */
+            overflow-y: auto;   /* 允许上下滑动 */
             position: relative;
+            padding: 2rem 0;    /* 增加上下间距，防止小屏幕下内容贴死屏幕边缘 */
         }
 
         /* Ambient Animated Background */
